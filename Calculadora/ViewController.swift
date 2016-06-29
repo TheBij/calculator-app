@@ -29,14 +29,20 @@ class ViewController: UIViewController {
     
     
     @IBAction private func touchDigit(sender: UIButton) {
+        
         if let digit = sender.currentTitle {
-                        
-            if userIsInTheMiddleOfTyping {
-                display.text = display.text! + digit
-            }
-            else {
-                display.text = digit
-                userIsInTheMiddleOfTyping = true
+            
+            // don't let user type decimal twice
+            if (display.text!.rangeOfString(".") == nil) || (digit != "." || !userIsInTheMiddleOfTyping) {
+                
+                if userIsInTheMiddleOfTyping {
+                    display.text = display.text! + digit
+                }
+                else {
+                    digit == "." ? (display.text = "0" + digit) : (display.text = digit)
+                    userIsInTheMiddleOfTyping = true
+                }
+                
             }
             
             
@@ -45,9 +51,12 @@ class ViewController: UIViewController {
     
     
     
+    
+    
     var brain = CalculatorBrain()
     
     @IBAction private func performOperation(sender: UIButton) {
+        
         
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)

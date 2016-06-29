@@ -20,8 +20,20 @@ class CalculatorBrain {
     var operations: Dictionary<String, Operation> = [
         "π" : Operation.Constant(M_PI),
         "e" : Operation.Constant(M_E),
+        "(.)(.)" : Operation.Constant(80085),
+        "???" : Operation.Constant(4815162342),
+        "∞" : Operation.Constant(DBL_MAX),
         "√" : Operation.UnaryOperation(sqrt),
         "cos" : Operation.UnaryOperation(cos),
+        "-" : Operation.UnaryOperation({ -$0 }),
+        "!" : Operation.UnaryOperation({
+            if $0 < 1 || $0 > 21 {return 1.0}
+            var total = 1.0
+            for num in 1...Int($0) {
+                total = total * Double(num)
+            }
+            return total
+        }),
         "×" : Operation.BinaryOperation({ $0 * $1 }),
         "÷" : Operation.BinaryOperation({ $0 / $1 }),
         "+" : Operation.BinaryOperation({ $0 + $1 }),
